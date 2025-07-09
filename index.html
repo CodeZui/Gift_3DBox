@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hộp Quà 3D</title>
+    <link rel="stylesheet" href="./style/style.css">
+  </head>
+  <body>
+    <canvas class="webgl"></canvas>
+    <script type="x-shader/x-vertex" id="vertexshaderCandle">
+      void main() {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshaderCandle">
+      uniform float time; 
+      uniform float colorSpeed;
+      uniform float delay; 
+      uniform vec3 baseColor;
+      uniform vec3 finalColor;
+      varying vec2 vUv;
+
+      void main() {
+        float animatedTime = time - delay;
+        animatedTime = mod(animatedTime, colorSpeed);
+        float mixFactor = animatedTime / colorSpeed;
+        vec3 finalColor = mix(baseColor, finalColor, mixFactor);
+        gl_FragColor = vec4(finalColor, 1.0);
+      }
+    </script>
+
+    <script type="module" src="./style/module.js"></script>
+  </body>
+</html>
